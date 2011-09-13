@@ -4,8 +4,6 @@ class LikeQr extends CI_Controller {
 
   private function loadMyMessage() {
     $messages= array();
-    
-    
     $message = array();
     $message["title"]="Ehy!!!";
     $message["caption"]="Ciao mondo!";
@@ -13,10 +11,10 @@ class LikeQr extends CI_Controller {
     $message["description"]="Ciao! Bel posto, bella gente!!!";
     //$message["picture"] = "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc6/199574_10150139682934734_114427359733_6492612_624261_n.jpg";
     $messages["hart"] = $message;
-    
     return $messages;
-    
   }
+  
+  
   function __construct() {
     parent::__construct();
     $this->config->load('facebook');
