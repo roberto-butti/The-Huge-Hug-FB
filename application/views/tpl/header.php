@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html> 
 	<head> 
-	<title>Page Title</title> 
+	<title><?php echo $title;?></title> 
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
@@ -12,5 +12,5 @@
 
 <body> 
 <div data-role="page"> 
-	<div data-role="header">HEADER</div> 
+	<div data-role="header"><?php echo $title;?></div> 
 	

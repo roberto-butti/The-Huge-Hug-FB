@@ -4,16 +4,43 @@ class LikeQr extends CI_Controller {
 
   private function loadMyMessage() {
     $messages= array();
+    
+    // primo messaggio
     $message = array();
+    $message["type"] ="POST";
     $message["title"]="Ehy!!!";
     $message["caption"]="Ciao mondo!";
     $message["url"]="http://www.google.com";
     $message["description"]="Ciao! Bel posto, bella gente!!!";
-    //$message["picture"] = "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc6/199574_10150139682934734_114427359733_6492612_624261_n.jpg";
+    $message["place"] = "159680277395899";
+    $message["coordinates"] = array(
+        'latitude' => 45.5644056,
+        'longitude' => 12.4280571
+        );
+    $message["picture"] = "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc6/199574_10150139682934734_114427359733_6492612_624261_n.jpg";
     $messages["hart"] = $message;
+    // fine primo mesaggio
+    
+    // secondo messaggio
+    // 
+    // fine secondo messaggio
+    
+    
     return $messages;
   }
   
+  private function loadViewHeader($title = "") {
+    $data = array();
+    $data["title"] = $title;
+    $this->load->view('tpl/header', $data);
+  }
+
+  private function loadViewFooter($messageFooter = "") {
+    $data = array();
+    $data["message"] = $messageFooter;
+    $this->load->view('tpl/footer', $data);
+  }
+
   
   function __construct() {
     parent::__construct();
@@ -50,9 +77,9 @@ class LikeQr extends CI_Controller {
     $this->load->helper('url');
     $data = array();
     $data["messages"] = $this->loadMyMessage();
-    $this->load->view('tpl/header');
+    $this->loadViewHeader("Index");
 		$this->load->view('likeqr/listofshare', $data);
-    $this->load->view('tpl/footer');
+    $this->loadViewFooter();
 	}
   
   public function show($key) {
@@ -60,12 +87,13 @@ class LikeQr extends CI_Controller {
     $ms = $this->loadMyMessage();
     if (key_exists($key, $ms)) {
       $data["message"] = $ms[$key];
+      $title = $data["message"]["title"];
       $data["user_is_logged"] = $this->user_is_logged;
       $data["user_log_url"] = $this->user_log_url;
       $data["url_to_share"] = site_url("likeqr/share/$key");
-      $this->load->view('tpl/header');
+      $this->loadViewHeader($title);
       $this->load->view('likeqr/show', $data);
-      $this->load->view('tpl/footer');
+      $this->loadViewFooter($title);
     } else {
       show_404();
     }
@@ -84,20 +112,20 @@ class LikeQr extends CI_Controller {
       $data["user_is_logged"] = $this->user_is_logged;
       $data["user_log_url"] = $this->user_log_url;
       $data["message"] = $m;
+      $wannaCheckinOnFacebook = ($m["type"] == "CHECKIN");
+      $wannaPostOnFacebook = ($m["type"] == "POST");
+      
       if ($this->user_is_logged) {
         if ($wannaPostOnFacebook) {
           $result = $this->facebook->api(
             '/me/feed/',
             'post',
             array(
-                //'message' => $m["title"],
-                'message' => "Sono qui con @[{689333867}:1:{flevaaaa}]",
+                'message' => $m["title"],
                 'caption' => $m["caption"],
-                //'picture' => $m["picture"],
+                'picture' => $m["picture"],
                 'link' => $m["url"],
-                //'description' => $m["description"]
-                'description' => "..."
-
+                'description' => $m["description"]
                 )
           );
         }
@@ -106,12 +134,10 @@ class LikeQr extends CI_Controller {
             '/me/checkins/',
             'post',
             array(
-                'message' => 'Bellissimo questo posto!',
-                'place'=> '159680277395899',
-                'coordinates' => array(
-                    'latitude' => 45.5644056,
-                    'longitude' => 12.4280571
-                )
+                'message' => $m["title"]." - ".$m["caption"],
+                'picture' => $m["picture"],
+                'place'=> $m["place"],
+                'coordinates' => $m["coordinates"]
             )
           );
         }
