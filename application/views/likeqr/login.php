@@ -1,3 +1,2 @@
 
-<div class="btn wide_widget"><?php echo anchor($user_log_url, "LOGIN!!!");?><span></span></div>
-	<p class="footer">Please login with facebook!</p>
+<?php echo anchor($user_log_url, "LOGIN!!!", " data-role='button' data-icon='info' data-iconpos='top' ");?>

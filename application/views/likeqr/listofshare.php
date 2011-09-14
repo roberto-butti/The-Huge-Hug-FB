@@ -3,7 +3,7 @@
     <ul>
  <?php foreach ($messages as $key => $m) {
    
-   echo "<li>".anchor("likeqr/show/".$key, $m["title"], array('title' => $m["caption"]))."</li>";
+   echo "<li>".anchor("likeqr/show/".$key, $m["title"]." - ".$m["caption"]." (".$m["type"].")", array('title' => $m["caption"]))."</li>";
    
  }
  ?>

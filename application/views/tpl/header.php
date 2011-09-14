@@ -12,5 +12,8 @@
 
 <body> 
 <div data-role="page"> 
-	<div data-role="header"><?php echo $title;?></div> 
+	<div data-role="header">
+    <a href="<?php echo site_url("likeqr/index");?>" data-icon="home">Home</a>
+  <h1><?php echo $title;?></h1>
+  </div> 
 	

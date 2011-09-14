@@ -7,11 +7,11 @@ class LikeQr extends CI_Controller {
     
     // primo messaggio
     $message = array();
-    $message["type"] ="POST";
-    $message["title"]="Ehy!!!";
-    $message["caption"]="Ciao mondo!";
-    $message["url"]="http://www.google.com";
-    $message["description"]="Ciao! Bel posto, bella gente!!!";
+    $message["type"] ="CHECKIN";
+    $message["title"]="Sono in H-art Developers Zone!!!";
+    $message["caption"]="Fantastico Posto!!! Bellissima Gente!!!";
+    $message["url"]="https://www.facebook.com/hartpage";
+    $message["description"]="Bellissimo qui!";
     $message["place"] = "159680277395899";
     $message["coordinates"] = array(
         'latitude' => 45.5644056,
@@ -100,7 +100,7 @@ class LikeQr extends CI_Controller {
   }
   public function share($key) {
     //echo $what;
-    $wannaPostOnFacebook = true;
+    $wannaPostOnFacebook = false;
     $wannaCheckinOnFacebook = false;
     $data = array();
     
@@ -113,7 +113,7 @@ class LikeQr extends CI_Controller {
       $data["user_log_url"] = $this->user_log_url;
       $data["message"] = $m;
       $wannaCheckinOnFacebook = ($m["type"] == "CHECKIN");
-      $wannaPostOnFacebook = ($m["type"] == "POST");
+      //$wannaPostOnFacebook = ($m["type"] == "POST");
       
       if ($this->user_is_logged) {
         if ($wannaPostOnFacebook) {
@@ -141,13 +141,13 @@ class LikeQr extends CI_Controller {
             )
           );
         }
-        $this->load->view('tpl/header');
+        $this->loadViewHeader($m["title"]);
         $this->load->view('likeqr/share', $data);
-        $this->load->view('tpl/footer');
+        $this->loadViewFooter($m["title"]." - ".$m["caption"]);
       } else {
-        $this->load->view('tpl/header');
+        $this->loadViewHeader("Please Login into Facebook");
         $this->load->view('likeqr/login', $data);
-        $this->load->view('tpl/footer');
+        $this->loadViewFooter("Please Login into Facebook to share your status and checkin!!!");
       }
     } else {
       show_404();
