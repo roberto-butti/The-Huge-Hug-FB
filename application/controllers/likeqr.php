@@ -130,6 +130,7 @@ class LikeQr extends CI_Controller {
           );
         }
         if ($wannaCheckinOnFacebook) {
+          try {
           $result = $this->facebook->api(
             '/me/checkins/',
             'post',
@@ -140,6 +141,9 @@ class LikeQr extends CI_Controller {
                 'coordinates' => $m["coordinates"]
             )
           );
+          } catch (Exception $e) {
+            
+          }
         }
         $this->loadViewHeader($m["title"]);
         $this->load->view('likeqr/share', $data);
